@@ -5,6 +5,9 @@ use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ClassController;
 use App\Http\Controllers\Admin\SectionController;
+use App\Http\Controllers\Admin\SessionController;
+use App\Http\Controllers\Admin\StudentController;
+use App\Http\Controllers\Admin\DesignationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +49,34 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::get('/section/delete/{id}',[SectionController::class,'deleteSection'])->name('admin.delete.section');
     Route::get('/section/edit/{id}',[SectionController::class,'editSection'])->name('admin.edit.section');
     Route::post('/section/update',[SectionController::class,'updateSection'])->name('admin.update.section');
+
+    //session
+    Route::get('/session/all',[SessionController::class,'allSession'])->name('admin.all.session');
+    Route::get('/session/add',[SessionController::class,'addSession'])->name('admin.add.session');
+    Route::post('/session/store',[SessionController::class,'storeSession'])->name('admin.store.session');
+    Route::get('/session/delete/{id}',[SessionController::class,'deleteSession'])->name('admin.delete.session');
+    Route::get('/session/edit/{id}',[SessionController::class,'editSession'])->name('admin.edit.session');
+    Route::post('/session/update',[SessionController::class,'updateSession'])->name('admin.update.session');
+
+    //designation
+    Route::get('/designation/all',[DesignationController::class,'allDesignation'])->name('admin.all.designation');
+    Route::get('/designation/add',[DesignationController::class,'addDesignation'])->name('admin.add.designation');
+    Route::post('/designation/store',[DesignationController::class,'storeDesignation'])->name('admin.store.designation');
+    Route::get('/designation/delete/{id}',[DesignationController::class,'deleteDesignation'])->name('admin.delete.designation');
+    Route::get('/designation/edit/{id}',[DesignationController::class,'editDesignation'])->name('admin.edit.designation');
+    Route::post('/designation/update',[DesignationController::class,'updateDesignation'])->name('admin.update.designation');
+
+    //student
+    Route::get('/student/all',[StudentController::class,'allStudent'])->name('admin.all.student');
+    Route::get('/student/add',[StudentController::class,'addStudent'])->name('admin.add.student');
+    Route::post('/student/store',[StudentController::class,'storeStudent'])->name('admin.store.student');
+    Route::get('/student/delete/{id}',[StudentController::class,'deleteStudent'])->name('admin.delete.student');
+    Route::get('/student/edit/{id}',[StudentController::class,'editStudent'])->name('admin.edit.student');
+    Route::post('/student/update',[StudentController::class,'updateStudent'])->name('admin.update.student');
+
+    //global route
+    //ajax for section auto select
+    Route::get('/class/section/ajax/{class_id}',[StudentController::class,'sectionAutoSelect']);
 });
 //=========================== admin all route end=========================
 

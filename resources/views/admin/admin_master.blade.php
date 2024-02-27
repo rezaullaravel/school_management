@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title> @yield('title')</title>
 
   <!-- Google Font: Source Sans Pro -->
@@ -39,6 +40,17 @@
 
   {{-- sweet alert --}}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+  {{-- data table --}}
+  {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap4.min.css"> --}}
+
+<link rel="stylesheet" href="{{ asset('/') }}backend/data-table/css/dataTables.min.css">
+
+
+    <script src="{{ asset('js/app.js') }}"></script>
+
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -175,5 +187,33 @@
     }
 </script>
 {{-- sweet alert end --}}
+
+
+{{-- data table --}}
+{{-- <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap4.min.js"></script> --}}
+
+    <script src="{{ asset('/') }}backend/data-table/js/jquery.dataTables.min.js"></script>
+<script src="{{ asset('/') }}backend/data-table/js/dataTables.bootstrap.min.js"></script>
+
+    <script>
+        new DataTable('#example', {
+    responsive: true
+});
+    </script>
+
+    {{-- ajax set up --}}
+        <script>
+            $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        </script>
+{{-- ajax set up end --}}
+
+
 </body>
 </html>

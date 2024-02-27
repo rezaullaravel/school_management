@@ -12,7 +12,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h4>All Class
-                            <a href="{{ route('admin.add.class') }}" class="btn btn-success" style="float: right;" title="Add New Class"><i class="las la-plus-square"></i></a>
+                            <a href="{{ route('admin.add.class') }}" class="btn btn-success btn-sm" style="float: right;" title="Add New Class"><i class="las la-plus-square"></i>Add New Class</a>
                         </h4>
                     </div>
 

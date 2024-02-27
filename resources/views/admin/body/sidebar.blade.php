@@ -56,9 +56,66 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('admin.all.section') }}" class="nav-link {{ (request()->is('admin/section/all')) ? 'active' : '' }}">
+                <a href="{{ route('admin.all.section') }}" class="nav-link {{ (request()->is('admin/section/all')) ? 'active' : '' }}" data-turbolinks-action="replace">
                   <i class="far fa-circle nav-icon"></i>
                   <p>All Section</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+
+          <li class="nav-item {{ (request()->is('admin/session*')) ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ (request()->is('admin/session*')) ? 'active' : '' }}">
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>
+                Session
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('admin.all.session') }}" class="nav-link {{ (request()->is('admin/session/all')) ? 'active' : '' }}" data-turbolinks-action="replace">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>All Session</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+
+          <li class="nav-item {{ (request()->is('admin/designation*')) ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ (request()->is('admin/designation*')) ? 'active' : '' }}">
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>
+                Designation
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('admin.all.designation') }}" class="nav-link {{ (request()->is('admin/designation/all')) ? 'active' : '' }}" data-turbolinks-action="replace">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>All Designation</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+
+          <li class="nav-item {{ (request()->is('admin/student*')) ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ (request()->is('admin/student*')) ? 'active' : '' }}">
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>
+                Student
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('admin.all.student') }}" class="nav-link {{ (request()->is('admin/student/all')) ? 'active' : '' }}" data-turbolinks-action="replace">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>All Student</p>
                 </a>
               </li>
             </ul>
