@@ -122,6 +122,25 @@
           </li>
 
 
+          <li class="nav-item {{ (request()->is('admin/attendence*')) ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ (request()->is('admin/attendence*')) ? 'active' : '' }}">
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>
+                Attendence
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('admin.student.attendence') }}" class="nav-link {{ (request()->is('admin/attendence/student')) ? 'active' : '' }}" data-turbolinks-action="replace">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Student Attendence</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>

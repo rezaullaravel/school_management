@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\SessionController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\DesignationController;
+use App\Http\Controllers\Admin\StudentAttendenceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,6 +78,12 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     //global route
     //ajax for section auto select
     Route::get('/class/section/ajax/{class_id}',[StudentController::class,'sectionAutoSelect']);
+
+
+    //student attendence
+    Route::get('/attendence/student',[StudentAttendenceController::class,'index'])->name('admin.student.attendence');
+    Route::get('/attendence/student/class',[StudentAttendenceController::class,'classWiseStudent'])->name('admin.student.attendence.class');
+    Route::post('/attendence/student/insert',[StudentAttendenceController::class,'insertAttendence'])->name('admin.attendence.student.insert');
 });
 //=========================== admin all route end=========================
 

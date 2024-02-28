@@ -205,13 +205,13 @@
     </script>
 
     {{-- ajax set up --}}
-        <script>
-            $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        </script>
+       <script>
+        $.ajaxSetup({
+           headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         }
+      });
+       </script>
 {{-- ajax set up end --}}
 
 
