@@ -137,6 +137,13 @@
                   <p>Student Attendence</p>
                 </a>
               </li>
+
+              <li class="nav-item">
+                <a href="{{ route('admin.student.attendence.report') }}" class="nav-link {{ (request()->is('admin/attendence/student/report')) ? 'active' : '' }}" data-turbolinks-action="replace">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Student Attendence Report</p>
+                </a>
+              </li>
             </ul>
           </li>
 

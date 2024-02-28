@@ -84,6 +84,11 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::get('/attendence/student',[StudentAttendenceController::class,'index'])->name('admin.student.attendence');
     Route::get('/attendence/student/class',[StudentAttendenceController::class,'classWiseStudent'])->name('admin.student.attendence.class');
     Route::post('/attendence/student/insert',[StudentAttendenceController::class,'insertAttendence'])->name('admin.attendence.student.insert');
+    Route::get('/attendence/student/report',[StudentAttendenceController::class,'studentAttendenceReport'])->name('admin.student.attendence.report');
+
+
+    Route::get('/attendence/student/{id}',[StudentAttendenceController::class,'editStudentAttendenceReport'])->name('admin.attendence.student.edit');
+    Route::post('/attendence/student/update',[StudentAttendenceController::class,'updateStudentAttendenceReport'])->name('admin.attendence.student.update');
 });
 //=========================== admin all route end=========================
 

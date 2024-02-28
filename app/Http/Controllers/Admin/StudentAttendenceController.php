@@ -7,6 +7,7 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Models\StudentAttendence;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
 
 class StudentAttendenceController extends Controller
 {
@@ -46,6 +47,48 @@ class StudentAttendenceController extends Controller
     ]);
 
 
+    }//end method
+
+
+    //student attendence report
+    public function studentAttendenceReport(Request $request){
+        $date =$request->date;
+        $classes = Clas::all();
+        $class = $request->clas_id;
+        $date =  $request->date;
+        $class_name = Clas::where('id',$class)->first();
+        $attendences = StudentAttendence::where('clas_id',$class)->where('date', $date)->paginate(2);
+        $attendences->appends(['date' => $date, 'clas_id' => $class]);
+        return view('admin.attendence.student_attendence_report',compact('classes','class','date','class_name','attendences'));
+
+    }//end method
+
+
+    //edit student attendence report
+    public function editStudentAttendenceReport($id,Request $request){
+        // $previousUrl = url()->previous();
+        // $request->session()->put('previous_url', $previousUrl);
+
+         $previousUrl = url()->previous();
+         $page = $request->input('page');
+
+         if ($page !== null) {
+             $previousUrl = Str::of($previousUrl)->append('?page=' . $page);
+         }
+         $request->session()->put('previous_url', $previousUrl);
+
+        $attendence = StudentAttendence::find($id);
+        return view('admin.attendence.student_attendence_edit',compact('attendence'));
+
+    }//end method
+
+
+    //update student attendence report
+    public function updateStudentAttendenceReport(Request $request){
+        $attendence = StudentAttendence::find($request->id);
+        $attendence->attendence_type=$request->attendence_type;
+        $attendence->save();
+        return redirect(Session::get('previous_url'))->with('message','Attendence Report Updated Successfully');
     }//end method
 
 

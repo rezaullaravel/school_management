@@ -14,4 +14,8 @@ class StudentAttendence extends Model
         'attendence_type',
         'date',
     ];
+
+    public function student(){
+        return $this->belongsTo(Student::class,'student_id');
+    }
 }

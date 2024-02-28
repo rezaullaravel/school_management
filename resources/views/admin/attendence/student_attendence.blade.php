@@ -25,7 +25,7 @@
                                         <select name="clas_id"   class="form-control" required>
                                             <option value="" selected disabled>Select</option>
                                             @foreach ($classes as $class)
-                                                <option value="{{ $class->id }}" >{{ $class->class_name }}</option>
+                                                <option value="{{ $class->id }}" {{ $class->id == Request::get('clas_id') ? 'selected':'' }}>{{ $class->class_name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
