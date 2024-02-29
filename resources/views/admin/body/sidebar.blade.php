@@ -167,6 +167,25 @@
           </li>
 
 
+          <li class="nav-item {{ (request()->is('admin/result*')) ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ (request()->is('admin/result*')) ? 'active' : '' }}">
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>
+                Result
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('admin.result.view') }}" class="nav-link {{ (request()->is('admin/result/view')) ? 'active' : '' }}" data-turbolinks-action="replace">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Get Result</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>

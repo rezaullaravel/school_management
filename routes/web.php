@@ -80,6 +80,11 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     //ajax for section auto select
     Route::get('/class/section/ajax/{class_id}',[StudentController::class,'sectionAutoSelect']);
 
+    //ajax for subject auto select
+    Route::get('/getSubjects/{class_id}/{section_id}',[StudentController::class,'subjectAutoSelect']);
+
+
+
 
     //student attendence
     Route::get('/attendence/student',[StudentAttendenceController::class,'index'])->name('admin.student.attendence');
@@ -93,6 +98,11 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     //mark assign to student
     Route::get('/mark/assign',[MarkController::class,'index'])->name('admin.mark.assign');
     Route::post('/mark/insert',[MarkController::class,'insert'])->name('admin.mark.insert');
+
+
+    //result get
+    Route::get('/result/view',[MarkController::class,'viewResult'])->name('admin.result.view');
+    Route::get('/result/get',[MarkController::class,'getResult'])->name('admin.get-result');
 });
 //=========================== admin all route end=========================
 

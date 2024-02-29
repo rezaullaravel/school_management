@@ -51,6 +51,8 @@
     <script src="{{ asset('js/app.js') }}"></script>
 
 
+
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -199,7 +201,7 @@
 <script src="{{ asset('/') }}backend/data-table/js/dataTables.bootstrap.min.js"></script>
 
     <script>
-        new DataTable('#example', {
+        new DataTable('.example', {
     responsive: true
 });
     </script>
@@ -213,6 +215,10 @@
       });
        </script>
 {{-- ajax set up end --}}
+
+{{-- js pdf --}}
+
+
 
 
 </body>

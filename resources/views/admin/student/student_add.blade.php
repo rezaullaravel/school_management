@@ -215,6 +215,6 @@
         });
     });
 </script>
-{{-- javascript for sub category auto select end --}}
+{{-- javascript for section auto select end --}}
 
 @endsection

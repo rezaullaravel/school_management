@@ -6,6 +6,7 @@ use Image;
 use App\Models\Clas;
 use App\Models\Section;
 use App\Models\Student;
+use App\Models\Subject;
 use App\Models\SessionModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -33,6 +34,13 @@ class StudentController extends Controller
     public function sectionAutoSelect($class_id){
         $sections = Section::where('clas_id',$class_id)->get();
         return json_encode($sections);
+    }//end method
+
+
+    //ajax for subject auto select
+    public function subjectAutoSelect($class_id,$section_id){
+        $subjects = Subject::where('clas_id',$class_id)->where('section_id',$section_id)->get();
+        return json_encode($subjects);
     }//end method
 
 

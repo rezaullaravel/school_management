@@ -19,10 +19,10 @@
                           <form action="{{ route('admin.mark.assign') }}" method="GET">
 
                             <div class="row">
-                                <div class="col-sm-4">
+                                <div class="col-sm-3">
                                     <div class="form-group">
                                         <label for="">Class</label>
-                                        <select name="clas_id"   class="form-control" required>
+                                        <select name="clas_id" id="class_id"   class="form-control" required>
                                             <option value="" selected disabled>Select</option>
                                             @foreach ($classes as $class)
                                                 <option value="{{ $class->id }}" {{ $class->id == Request::get('clas_id') ? 'selected':'' }}>{{ $class->class_name }}</option>
@@ -31,19 +31,66 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-4">
+                                <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label for="">Subject</label>
-                                        <select name="subject_id"   class="form-control" required>
+                                        <label for="">Section</label>
+                                        <select name="section_id" id="section_id"  class="form-control">
                                             <option value="" selected disabled>Select</option>
-                                          <option value="1" {{ Request::get('subject_id') ==1 ? 'selected':'' }}>Bangla</option>
-                                          <option value="2" {{ Request::get('subject_id') ==2 ? 'selected':'' }}>English</option>
-                                          <option value="3" {{ Request::get('subject_id') ==3 ? 'selected':'' }}>Math</option>
+                                            @foreach ($sections as $section)
+                                                <option value="{{ $section->id }}" {{ Request::get('section_id')== $section->id ? 'selected':'' }}>
+                                                    @if (!empty(Request::get('clas_id')))
+                                                        {{ $section->section_name }}
+                                                    @endif
+                                                </option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
 
-                                <div class="col-sm-4">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label for="">Subject</label>
+                                        <select name="subject_id" id="subject_id" class="form-control" required>
+                                            <option value="">Select Subject</option>
+
+                                                @foreach ($subjects as $subject)
+                                                    <option value="{{ $subject->id }}" {{ Request::get('subject_id') == $subject->id ? 'selected':'' }}>
+                                                        {{ $subject->subject }}
+                                                    </option>
+                                                @endforeach
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                                 <div class="col-sm-3">
+                                    <div class="form-group">
+                                       <label for="">Exam Name</label>
+                                       <select name="exam_id" class="form-control" required>
+                                           <option value="" selected disabled>Select</option>
+                                           @foreach ($exams as $exam)
+                                               <option value="{{ $exam->id }}" {{ Request::get('exam_id') == $exam->id ? 'selected':'' }}>{{ $exam->exam_name }}</option>
+                                           @endforeach
+                                       </select>
+                                    </div>
+                                  </div>
+                            </div>{{-- row --}}
+
+                            <div class="row">
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                       <label for="">Session</label>
+                                       <select name="session_id"  class="form-control" required>
+                                        <option value="" selected disabled>Select</option>
+                                        @foreach ($sessions as $session)
+                                            <option value="{{ $session->id }}" {{ Request::get('session_id') == $session->id ? 'selected':'' }}> {{ $session->session_year }} </option>
+                                        @endforeach
+                                    </select>
+                                    </div>
+                                  </div>
+
+                                <div class="col-sm-3">
                                     <div class="form-group">
                                         <label for=""></label>
                                         <input type="submit" value="submit" class="btn btn-success btn-block" style="margin-top:7px;">
@@ -68,7 +115,7 @@
                     <div class="card-body">
                         <form action="{{ route('admin.mark.insert') }}" method="POST">
                             @csrf
-                            <table class="table table-bordered">
+                            <table  class="table table-bordered">
                                 <thead>
                                     <th>Sl</th>
                                     <th>Student Name</th>
@@ -77,7 +124,10 @@
                                 </thead>
                                 <tbody>
                                     <input type="hidden" name="clas_id" value="{{ $class_id }}">
+                                    <input type="hidden" name="section_id" value="{{ $section_id }}">
                                    <input type="hidden" name="subject_id" value="{{ $subject_id }}">
+                                   <input type="hidden" name="exam_id" value="{{ Request::get('exam_id') }}">
+                                   <input type="hidden" name="session_id" value="{{ Request::get('session_id') }}">
                                     @foreach($students as $index => $student)
                                         <tr>
                                             <td>{{ $index+1 }}</td>
@@ -99,6 +149,7 @@
 
                             </table>
 
+
                             <div class="row">
                                 <div class="col-sm-12">
                                     <input type="submit" value="Assign Mark" class="btn btn-success" style="float: right;">
@@ -115,6 +166,62 @@
 
     </div>
  </section>
+
+
+
+{{-- js for section and subject auto select --}}
+<script>
+    $(document).ready(function() {
+        $('select[name="clas_id"]').on('change',function(){
+            var class_id=$(this).val();
+            if(class_id){
+                $.ajax({
+                    url:"{{ url('/admin/class/section/ajax') }}/"+class_id,
+                    type:"GET",
+                    dataType:"json",
+                    success:function(data){
+                        var d=$('select[name="section_id"]').empty();
+                        $.each(data,function(key,value){
+                            $('select[name="section_id"]').append(
+                                '<option value="'+value.id+'">'+
+                                value.section_name+'</option>');
+                        });
+                    },
+                });
+            }else{
+                alert('danger');
+            }
+        });
+
+        //subject auto select
+//         $('select[name="section_id"]').on('change',function() {
+//     var class_id = $('#class_id').val();
+//     var section_id = $(this).val();
+//     if(class_id && section_id) {
+//         $.ajax({
+//             type: "GET",
+//             url: "/admin/getSubjects/"+class_id+"/"+section_id,
+//             success: function(res) {
+
+//                 var data = JSON.parse(res);
+//                 //console.log(typeof data);
+
+//                 $('#subject_id').empty();
+//                 $.each(data, function(index, subject) {
+//                     $('#subject_id').append('<option value="' + subject.id + '">' + subject.subject + '</option>');
+//                 });
+
+//             },
+
+//         });
+//     } else {
+//        alert('danger');
+//     }
+// });//subject auto select end
+
+});
+
+</script>
 
 
 
