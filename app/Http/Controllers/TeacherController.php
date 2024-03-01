@@ -15,6 +15,8 @@ class TeacherController extends Controller
             return redirect()->route('teacher.dashboard');
         } elseif(Session::get('adminId')){
             return redirect('/admin/dashboard');
+        } elseif(Session::get('studentId')){
+            return redirect()->route('student.dashboard');
         } else{
             return view('teacher.teacher_login');
         }
@@ -51,7 +53,8 @@ class TeacherController extends Controller
 
     //teacher logout
     public function teacherLogout(){
-        Session::forget('teacherId');
+        //Session::forget('teacherId');
+        Session::flush();
         return redirect('/');
     }//end method
 }//end method

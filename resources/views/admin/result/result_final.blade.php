@@ -1,7 +1,7 @@
 @extends('admin.admin_master')
 
 @section('title')
-    Result Final
+    Result Modification
 @endsection
 
 
@@ -11,12 +11,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-10 offset-sm-1">
-                @if (session('sms'))
-                    <div class="alert alert-danger">
-                        <h4 class="text-center">{{ Session::get('sms') }}</h4>
-                    </div>
-                @endif
-                <div class="card" id="content">
+
+                <div class="card" id="result">
                    <div class="card-header">
                         <h4>Student Result.
 
@@ -65,7 +61,6 @@
                                  <th>Mark</th>
                                  <th>Grade Point</th>
                                  <th>Grade</th>
-
                              </tr>
                           </thead>
 
@@ -73,50 +68,62 @@
                             @php
                                 $totalGradePoint = 0;
                                 $totalSubjects = count($marks);
+                                $x='';
                             @endphp
                              @foreach ($marks as $key=>$mark)
-                                 <tr>
-                                     <td>{{ $key+1 }}</td>
-                                     <td>{{ $mark->subject->subject }}</td>
-                                     <td>{{ $mark->mark }}</td>
-                                     <td>{{ $mark->grade_point }}</td>
-                                     <td>{{ $mark->grade_name }}</td>
 
-                                 </tr>
                             @php
                                 if ($mark->mark <= 100 && $mark->mark >= 80) {
                                 $gradePoint = 5.00;
+                                $grade_name = 'A+';
                             } elseif ($mark->mark <= 79 && $mark->mark >= 70) {
                                 $gradePoint = 4.00;
+                                $grade_name = 'A';
                             } elseif ($mark->mark <= 69 && $mark->mark >= 60) {
                                 $gradePoint = 3.50;
+                                $grade_name = 'A-';
                             } elseif ($mark->mark <= 59 && $mark->mark >= 50) {
                                 $gradePoint = 3.00;
+                                $grade_name = 'B';
                             } elseif ($mark->mark <= 49 && $mark->mark >= 40) {
                                 $gradePoint = 2.50;
+                                $grade_name = 'C';
                             } elseif ($mark->mark <= 39 && $mark->mark >= 33) {
                                 $gradePoint = 2.00;
-                            } else {
+                                $grade_name = 'D';
+                            } elseif($mark->mark<33) {
                                 $gradePoint = 0;
+                                $grade_name = 'F';
                             }
+
 
                             // Check if the grade point is 0 for any subject
                             if ($gradePoint == 0) {
-                                $totalGradePoint = 0;
-                                break; // No need to continue, as the result is already 0
+                                $x = 'fail';
+                                 //break; // No need to continue, as the result is already 0
+                            } else{
+                                $totalGradePoint += $gradePoint;
                             }
 
-                            $totalGradePoint += $gradePoint;
 
                             @endphp
+
+                            <tr>
+                                <td>{{ $key+1 }}</td>
+                                <td>{{ $mark->subject->subject }}</td>
+                                <td>{{ $mark->mark }}</td>
+                                <td>{{ $gradePoint  }}</td>
+                                <td>{{ $grade_name }}</td>
+                            </tr>
                              @endforeach
 
                              @php
                                  // Calculate the result
-                                    if ($totalGradePoint > 0) {
-                                        $result = $totalGradePoint / $totalSubjects;
-                                    } else {
+                                    if ($x =='fail') {
+
                                         $result = 0;
+                                    } else {
+                                        $result = $totalGradePoint / $totalSubjects;
                                     }
                              @endphp
 
@@ -157,18 +164,18 @@
             </div>
         </div>{{-- main row --}}
 
-        <div class="row mb-3">
+        <div class="row">
             <div class="col-sm-10 offset-sm-1">
-                <button class="btn btn-success" id="submit" style="float: right;">Download Result</button>
-
-                <button onclick="window.print()" class="btn btn-info mr-3" style="float: right;">Print this page</button>
+                <button class="btn btn-success" id="submit" style="float: right;">Download</button>
+                <button class="btn btn-info mr-3" onclick="window.print();" style="float: right;">Print</button>
             </div>
         </div>{{-- row --}}
+
     </div>
  </section>
 
 
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
 
 
@@ -180,11 +187,13 @@ var specialElementHandlers = {
     }
 };
 $('#submit').click(function () {
-    doc.fromHTML($('#content').html(), 15, 15, {
+    doc.fromHTML($('#result').html(), 15, 15, {
         'width': 190,
             'elementHandlers': specialElementHandlers
     });
-    doc.save('result.pdf');
+    doc.save('student-result.pdf');
 });
 </script>
+
+
 @endsection

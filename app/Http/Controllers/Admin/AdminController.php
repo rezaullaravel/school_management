@@ -16,6 +16,8 @@ class AdminController extends Controller
             return redirect()->route('admin.dashboard');
         } elseif(Session::get('teacherId')){
             return redirect()->route('teacher.dashboard');
+        } elseif(Session::get('studentId')){
+            return redirect()->route('student.dashboard');
         } else{
             return view('admin.admin_login');
         }

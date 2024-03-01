@@ -18,6 +18,8 @@ class TeacherMiddleware
     {
         if(Session::get('teacherId')){
             return $next($request);
+        } elseif(Session::get('studentId')){
+            return redirect('/student/dashboard');
         } elseif(Session::get('adminId')){
             return redirect('/admin/dashboard');
         }else{

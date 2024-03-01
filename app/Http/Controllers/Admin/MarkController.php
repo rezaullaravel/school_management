@@ -11,6 +11,7 @@ use App\Models\Subject;
 use App\Models\SessionModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
 
 class MarkController extends Controller
 {
@@ -67,63 +68,6 @@ class MarkController extends Controller
             $mark->exam_id = $exam_id;
             $mark->session_id = $session_id;
 
-            if($marks[$key]<=100 && $marks[$key]>=80){
-                $mark->grade_point=5.00;
-            }
-
-            if($marks[$key]<=79 && $marks[$key]>=70){
-                $mark->grade_point=4.00;
-            }
-
-            if($marks[$key]<=69 && $marks[$key]>=60){
-                $mark->grade_point=3.50;
-            }
-
-            if($marks[$key]<=59 && $marks[$key]>=50){
-                $mark->grade_point=3.00;
-            }
-
-            if($marks[$key]<=49 && $marks[$key]>=40){
-                $mark->grade_point=2.50;
-            }
-
-            if($marks[$key]<=39 && $marks[$key]>=33){
-                $mark->grade_point=2.00;
-            }
-
-            if($marks[$key]<33){
-                $mark->grade_point=0;
-            }
-
-
-            if($marks[$key]<=100 && $marks[$key]>=80){
-                $mark->grade_name='A+';
-            }
-
-            if($marks[$key]<=79 && $marks[$key]>=70){
-                $mark->grade_name='A';
-            }
-
-            if($marks[$key]<=69 && $marks[$key]>=60){
-                $mark->grade_name='A-';
-            }
-
-            if($marks[$key]<=59 && $marks[$key]>=50){
-                $mark->grade_name='B';
-            }
-
-            if($marks[$key]<=49 && $marks[$key]>=40){
-                $mark->grade_name='C';
-            }
-
-            if($marks[$key]<=39 && $marks[$key]>=33){
-                $mark->grade_name='D';
-            }
-
-            if($marks[$key]<33){
-                $mark->grade_name='F';
-            }
-
             }else{
                 $mark = new Mark();
                 $mark->student_id = $student_id;
@@ -135,64 +79,6 @@ class MarkController extends Controller
                 $mark->subject_id = $subject_id;
                 $mark->exam_id = $exam_id;
                 $mark->session_id = $session_id;
-
-
-                if($marks[$key]<=100 && $marks[$key]>=80){
-                    $mark->grade_point=5.00;
-                }
-
-                if($marks[$key]<=79 && $marks[$key]>=70){
-                    $mark->grade_point=4.00;
-                }
-
-                if($marks[$key]<=69 && $marks[$key]>=60){
-                    $mark->grade_point=3.50;
-                }
-
-                if($marks[$key]<=59 && $marks[$key]>=50){
-                    $mark->grade_point=3.00;
-                }
-
-                if($marks[$key]<=49 && $marks[$key]>=40){
-                    $mark->grade_point=2.50;
-                }
-
-                if($marks[$key]<=39 && $marks[$key]>=33){
-                    $mark->grade_point=2.00;
-                }
-
-                if($marks[$key]<33){
-                    $mark->grade_point=0;
-                }
-
-
-                if($marks[$key]<=100 && $marks[$key]>=80){
-                    $mark->grade_name='A+';
-                }
-
-                if($marks[$key]<=79 && $marks[$key]>=70){
-                    $mark->grade_name='A';
-                }
-
-                if($marks[$key]<=69 && $marks[$key]>=60){
-                    $mark->grade_name='A-';
-                }
-
-                if($marks[$key]<=59 && $marks[$key]>=50){
-                    $mark->grade_name='B';
-                }
-
-                if($marks[$key]<=49 && $marks[$key]>=40){
-                    $mark->grade_name='C';
-                }
-
-                if($marks[$key]<=39 && $marks[$key]>=33){
-                    $mark->grade_name='D';
-                }
-
-                if($marks[$key]<33){
-                    $mark->grade_name='F';
-                }
             }
 
             $mark->save();
@@ -230,5 +116,60 @@ class MarkController extends Controller
         }
 
 
+    }//end method
+
+
+    //modify result
+    public function modifyResult(){
+        $classes = Clas::all();
+        $sessions = SessionModel::all();
+        $exams = Exam::all();
+        return view('admin.result.result_modify',compact('classes','sessions','exams'));
+    }//end method
+
+
+    //get result for modify
+    public function getResultForModify(Request $request){
+        $student = Student::where('roll',$request->roll)->first();
+        if($student){
+            $marks = Mark::where('student_id', $student->id)->where('clas_id',$request->clas_id)->where('session_id',$request->session_id)->where('exam_id',$request->exam_id)->get();
+
+            $exam = Exam::where('id',$request->exam_id)->first();
+
+            if(!empty($marks)){
+                return view('admin.result.result_view_modify',compact('marks','student','exam'));
+            }else{
+                return redirect()->back()->with('sms','Something went wrong....Please try again');
+            }
+        }else{
+            return redirect()->back()->with('sms','Something went wrong....Please try again');
+        }
+    }//end method
+
+
+    //edit result
+    public function editResult($id,Request $request){
+        $mark = Mark::find($id);
+           // Capture the previous URL
+           $previousUrl = $request->session()->get('previousUrl', url()->previous());
+
+           // Store it in the session
+           $request->session()->put('previousUrl', $previousUrl);
+        return view('admin.result.result_edit',compact('mark'));
+    }//end method
+
+
+    //update result
+    public function updateResult(Request $request){
+        $mark = Mark::find($request->id);
+        $mark->mark = $request->mark;
+        $mark->save();
+        return redirect(Session::get('previousUrl'))->with('message','Result Updated Successfully');
+    }//end method
+
+    //delete result
+    public function deleteResult($id){
+        Mark::find($id)->delete();
+        return redirect(Session::get('previousUrl'))->with('message','Data Deleted Successfully');
     }//end method
 }//end class

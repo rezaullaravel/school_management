@@ -2,29 +2,30 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\Admin\ExamController;
 use App\Http\Controllers\Admin\MarkController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ClassController;
+use App\Http\Controllers\StudentAuthController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\SessionController;
 use App\Http\Controllers\Admin\StudentController;
+use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Admin\AdmissionController;
 use App\Http\Controllers\Admin\DesignationController;
+use App\Http\Controllers\Frontend\FrontHomeController;
 use App\Http\Controllers\Admin\StudentAttendenceController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+
+
+//global route
+    //ajax for section auto select
+    Route::get('admin/class/section/ajax/{class_id}',[StudentController::class,'sectionAutoSelect']);
+
+    //ajax for subject auto select
+    Route::get('admin/getSubjects/{class_id}/{section_id}',[StudentController::class,'subjectAutoSelect']);
 
 
 //=========================== admin all route=========================
@@ -76,15 +77,6 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::get('/student/edit/{id}',[StudentController::class,'editStudent'])->name('admin.edit.student');
     Route::post('/student/update',[StudentController::class,'updateStudent'])->name('admin.update.student');
 
-    //global route
-    //ajax for section auto select
-    Route::get('/class/section/ajax/{class_id}',[StudentController::class,'sectionAutoSelect']);
-
-    //ajax for subject auto select
-    Route::get('/getSubjects/{class_id}/{section_id}',[StudentController::class,'subjectAutoSelect']);
-
-
-
 
     //student attendence
     Route::get('/attendence/student',[StudentAttendenceController::class,'index'])->name('admin.student.attendence');
@@ -103,6 +95,36 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     //result get
     Route::get('/result/view',[MarkController::class,'viewResult'])->name('admin.result.view');
     Route::get('/result/get',[MarkController::class,'getResult'])->name('admin.get-result');
+    Route::get('/result/modify',[MarkController::class,'modifyResult'])->name('admin.result.modify');
+    Route::get('/result/view-modify',[MarkController::class,'getResultForModify'])->name('admin.modify-result');
+    Route::get('/result/edit/{id}',[MarkController::class,'editResult'])->name('admin.result.edit');
+    Route::post('/result/update',[MarkController::class,'updateResult'])->name('admin.update.result');
+    Route::get('/result/delete/{id}',[MarkController::class,'deleteResult'])->name('admin.result.delete');
+
+
+    //subject
+    Route::get('/subject/all',[SubjectController::class,'allSubject'])->name('admin.all.subject');
+    Route::get('/subject/add',[SubjectController::class,'addSubject'])->name('admin.add.subject');
+    Route::post('/subject/store',[SubjectController::class,'storeSubject'])->name('admin.store.subject');
+    Route::get('/subject/delete/{id}',[SubjectController::class,'deleteSubject'])->name('admin.delete.subject');
+    Route::get('/subject/edit/{id}',[SubjectController::class,'editSubject'])->name('admin.edit.subject');
+    Route::post('/subject/update',[SubjectController::class,'updateSubject'])->name('admin.update.subject');
+
+
+    //exam
+    Route::get('/exam/all',[ExamController::class,'allExam'])->name('admin.all.exam');
+    Route::get('/exam/add',[ExamController::class,'addExam'])->name('admin.add.exam');
+    Route::post('/exam/store',[ExamController::class,'storeExam'])->name('admin.store.exam');
+    Route::get('/exam/delete/{id}',[ExamController::class,'deleteExam'])->name('admin.delete.exam');
+    Route::get('/exam/edit/{id}',[ExamController::class,'editExam'])->name('admin.edit.exam');
+    Route::post('/exam/update',[ExamController::class,'updateExam'])->name('admin.update.exam');
+
+
+    //admin addmission
+    Route::get('/admission/student',[AdmissionController::class,'admissionApplicantList'])->name('admin.admission.student');
+
+    //accept application
+    Route::get('/accept/application/{id}',[AdmissionController::class,'acceptAppllication'])->name('admin.accept.application');
 });
 //=========================== admin all route end=========================
 
@@ -113,5 +135,34 @@ Route::post('/teacher-login',[TeacherController::class,'teacherPostLogin'])->nam
 Route::middleware(['teacher'])->group(function () {
     Route::get('/teacher/dashboard',[TeacherController::class,'teacherDashboard'])->name('teacher.dashboard');
     Route::get('/teacher/logout',[TeacherController::class,'teacherLogout'])->name('teacher.logout');
+
 });
 /*===========================Teacher all route end===========================*/
+
+
+/*===================student all route start ====================  */
+Route::get('/student/login',[StudentAuthController::class,'studentLoginForm'])->name('student.login');
+Route::get('/student/register',[StudentAuthController::class,'studentRegisterForm'])->name('student.register');
+Route::post('/student/post-login',[StudentAuthController::class,'studentPostLogin'])->name('student.post.login');
+
+
+
+Route::middleware(['student'])->group(function(){
+    Route::get('/student/dashboard',[StudentAuthController::class,'studentDashboard'])->name('student.dashboard');
+    Route::get('/student/logout',[StudentAuthController::class,'studentLogout'])->name('student.logout');
+});
+/*===================student all route end====================  */
+
+
+/*===========================Frontend all route================================ */
+//home page
+Route::get('/',[FrontHomeController::class,'index']);
+
+//result
+Route::get('/student/result',[FrontHomeController::class,'result'])->name('student.result');
+Route::get('/student-result/show',[FrontHomeController::class,'getStudentResult'])->name('student.get-result');
+
+//admission
+Route::get('/student/admission',[FrontHomeController::class,'studentAdmissionForm'])->name('student.admission');
+Route::post('/store/admission/info',[FrontHomeController::class,'storeAdmissionInfo'])->name('store.admission.info');
+/*===========================Frontend all route end ================================ */

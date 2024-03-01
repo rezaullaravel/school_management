@@ -57,7 +57,7 @@ class StudentAttendenceController extends Controller
         $class = $request->clas_id;
         $date =  $request->date;
         $class_name = Clas::where('id',$class)->first();
-        $attendences = StudentAttendence::where('clas_id',$class)->where('date', $date)->paginate(2);
+        $attendences = StudentAttendence::where('clas_id',$class)->where('date', $date)->paginate(50);
         $attendences->appends(['date' => $date, 'clas_id' => $class]);
         return view('admin.attendence.student_attendence_report',compact('classes','class','date','class_name','attendences'));
 

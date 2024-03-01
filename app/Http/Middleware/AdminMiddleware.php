@@ -21,6 +21,8 @@ class AdminMiddleware
             return $next($request);
         } elseif(Session::get('teacherId')){
             return redirect()->route('teacher.dashboard');
+        }  elseif(Session::get('studentId')){
+            return redirect('/student/dashboard');
         } else{
             return redirect('/admin/login');
         }

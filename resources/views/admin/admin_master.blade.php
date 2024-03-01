@@ -201,7 +201,7 @@
 <script src="{{ asset('/') }}backend/data-table/js/dataTables.bootstrap.min.js"></script>
 
     <script>
-        new DataTable('.example', {
+        new DataTable('#example', {
     responsive: true
 });
     </script>

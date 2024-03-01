@@ -119,7 +119,8 @@
                                 <thead>
                                     <th>Sl</th>
                                     <th>Student Name</th>
-                                    <th>Student Reg.</th>
+                                    <th>Roll</th>
+                                    <th>Reg.</th>
                                     <th>Mark</th>
                                 </thead>
                                 <tbody>
@@ -132,6 +133,7 @@
                                         <tr>
                                             <td>{{ $index+1 }}</td>
                                             <td>{{ $student->name }}</td>
+                                            <td>{{ $student->roll }}</td>
                                             <td>{{ $student->registration }}</td>
                                             @php
                                                 $mark = App\Models\Mark::where('subject_id',$subject_id)->where('clas_id', $class_id)->where('student_id', $student->id)->first();
